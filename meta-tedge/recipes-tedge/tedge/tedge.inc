@@ -13,6 +13,7 @@ SUMMARY = "tedge is the cli tool for thin-edge.io"
 HOMEPAGE = "https://thin-edge.io"
 LICENSE = "Apache-2.0"
 
+inherit logging
 inherit cargo useradd
 
 RDEPENDS:${PN} = " mosquitto ca-certificates libgcc glibc-utils libxcrypt sudo collectd"
@@ -41,20 +42,13 @@ USERADD_PACKAGES = "${PN}"
 GROUPADD_PARAM:${PN} = "--system --gid 950 tedge"
 USERADD_PARAM:${PN} = "--system --no-create-home --shell /sbin/nologin --uid 951 --gid 950 tedge"
 
-python __anonymous () {
-    install_dir = "${sysconfdir}/tedge"
-    tedge_config_symlink = ""
-
-    if bb.utils.contains('IMAGE_FEATURES', 'read-only-rootfs', True, False, d):
-        if not bb.utils.contains('IMAGE_FEATURES', 'overlayfs-etc', True, False, d):
-            tedge_config_symlink = install_dir
-            install_dir = "${sysconfdir}/tedge-default"
-
-    d.setVar("TEDGE_CONFIG_DIR", d.expand(install_dir))
-    d.setVar("TEDGE_CONFIG_SYMLINK", d.expand(tedge_config_symlink))
-}
+TEDGE_CONFIG_DIR ?= "/etc/tedge"
+TEDGE_CONFIG_SYMLINK ?= ""
+TEDGE_CONFIG_SYMLINK_SRC ?= ""
 
 do_install:append () {
+    bbnote "tedge recipe config: TEDGE_CONFIG_DIR=${TEDGE_CONFIG_DIR}, TEDGE_CONFIG_SYMLINK=${TEDGE_CONFIG_SYMLINK}"
+
     # Create all folders
     install -d ${D}${TEDGE_CONFIG_DIR}
     install -d ${D}${TEDGE_CONFIG_DIR}/device
@@ -95,8 +89,8 @@ do_install:append () {
     # make a copy of the /etc/tedge data included in the image (so it can be copied later)
     # and create a symlink from /etc/tedge to /data/tedge
     #
-    if [ -n "${TEDGE_CONFIG_SYMLINK}" ]; then
-        ln --relative --symbolic ${D}/data/tedge ${D}${TEDGE_CONFIG_SYMLINK}
+    if [ -n "${TEDGE_CONFIG_SYMLINK}" ] && [ -n "${TEDGE_CONFIG_SYMLINK_SRC}" ]; then
+        ln --relative --symbolic ${D}${TEDGE_CONFIG_SYMLINK_SRC} ${D}${TEDGE_CONFIG_SYMLINK}
     fi
 }
 

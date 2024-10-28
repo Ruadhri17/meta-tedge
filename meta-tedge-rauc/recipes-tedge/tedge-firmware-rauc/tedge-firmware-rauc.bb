@@ -7,24 +7,16 @@ SRC_URI += " \
     file://persist.conf \
 "
 
+inherit logging
+
 DEPENDS = "tedge mosquitto"
 RDEPENDS:${PN} += " tedge"
 
-# TODO: Move logic to a single class and inherit it
-python __anonymous () {
-    install_dir = "${sysconfdir}/tedge"
-    tedge_config_symlink = ""
-
-    if bb.utils.contains('IMAGE_FEATURES', 'read-only-rootfs', True, False, d):
-        if not bb.utils.contains('IMAGE_FEATURES', 'overlayfs-etc', True, False, d):
-            tedge_config_symlink = install_dir
-            install_dir = "${sysconfdir}/tedge-default"
-
-    d.setVar("TEDGE_CONFIG_DIR", d.expand(install_dir))
-    d.setVar("TEDGE_CONFIG_SYMLINK", d.expand(tedge_config_symlink))
-}
+TEDGE_CONFIG_DIR ?= "/etc/tedge"
 
 do_install () {
+    bbnote "tedge recipe config: TEDGE_CONFIG_DIR=${TEDGE_CONFIG_DIR}"
+
     # Add firmware worfklow and script
     install -d "${D}${bindir}"
     install -m 0755 "${WORKDIR}/rauc_workflow.sh" "${D}${bindir}"
