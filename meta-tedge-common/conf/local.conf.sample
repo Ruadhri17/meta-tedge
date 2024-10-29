@@ -295,6 +295,7 @@ SDIMG_ROOTFS_TYPE = "ext4"
 IMAGE_INSTALL:append = " \ 
     tedge \
     tedge-bootstrap \
+    tedge-sethostname \
     tedge-inventory \
     tedge-state-scripts \
     tedge-firmware \

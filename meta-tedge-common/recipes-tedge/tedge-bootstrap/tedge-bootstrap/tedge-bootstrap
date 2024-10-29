@@ -48,6 +48,9 @@ done
 init_tedge_data
 
 # Run bootstrapping hooks
+RUN_PARTS="/usr/share/tedge-bootstrap/scripts.d"
+NAME_FILTER="[0-9][0-9]_*"
+
 _NEWLINE=$(printf '\n')
 find -L "$RUN_PARTS" -type f -name "$NAME_FILTER" -perm 755 | while IFS="$_NEWLINE" read -r file
 do
