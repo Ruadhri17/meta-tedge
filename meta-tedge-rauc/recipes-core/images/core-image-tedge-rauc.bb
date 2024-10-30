@@ -3,6 +3,7 @@ require recipes-core/images/core-image-tedge.bb
 IMAGE_INSTALL:append = " \
     tedge-firmware-rauc \
     ${@bb.utils.contains('INIT_MANAGER','systemd','tedge-bootstrap','',d)} \
+    ${@bb.utils.contains('INIT_MANAGER','systemd','tedge-sethostname','',d)} \
 "
 
 # Add Network Manager

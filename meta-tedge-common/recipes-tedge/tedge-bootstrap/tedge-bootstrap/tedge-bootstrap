@@ -7,18 +7,27 @@ log() {
     echo "$@" >&2
 }
 
-set_hostname() {
-    host_name="$1"
-    if [ "$(cat /etc/hostname)" = "$host_name" ]; then
-        echo "Host name is already set"
-        return
-    fi
-    echo "$host_name" | tee /etc/hostname
-    sed -i -E 's/^127.0.1.1.*/127.0.1.1\t'"$host_name"'/' /etc/hosts
-    hostnamectl set-hostname "$host_name"
+init_tedge_data() {
+    # Create data persistence folders
+    # Ensure persistence of operation state across partition swaps by storing
+    # information on a persisted mount
+    DATA_DIR="${DATA_DIR:-/data}"
+    if [ -d "$DATA_DIR" ]; then
+        log "Creating tedge persistence folder under $DATA_DIR/tedge"
 
-    if command -V systemctl >/dev/null 2>&1; then
-        systemctl restart avahi-daemon --no-block 2>/dev/null ||:
+        if [ -d /etc/tedge-default ]; then
+            log "Copying files from /etc/tedge-default to $DATA_DIR/tedge"
+            cp -rp /etc/tedge-default "$DATA_DIR/tedge"
+        fi
+
+        mkdir -p "$DATA_DIR/tedge"
+        mkdir -p "$DATA_DIR/tedge/log"
+        mkdir -p "$DATA_DIR/tedge/agent"
+        chown -Rh tedge:tedge "$DATA_DIR/tedge"
+
+        log "Creating tedge persistence folder under $DATA_DIR/mosquitto"
+        mkdir -p "$DATA_DIR/mosquitto"
+        chown -Rh mosquitto:mosquitto "$DATA_DIR/mosquitto"
     fi
 }
 
@@ -36,6 +45,22 @@ while [ "$attempt" -lt 30 ]; do
     sleep 5
 done
 
-set_hostname "$DEVICE_ID"
+init_tedge_data
+
+# Run bootstrapping hooks
+RUN_PARTS="/usr/share/tedge-bootstrap/scripts.d"
+NAME_FILTER="[0-9][0-9]_*"
+
+_NEWLINE=$(printf '\n')
+find -L "$RUN_PARTS" -type f -name "$NAME_FILTER" -perm 755 | while IFS="$_NEWLINE" read -r file
+do
+    echo "Executing bootstrap script: $file" >&2
+    if "$file" "$DEVICE_ID"; then
+        log "bootstrap hook ($file) was successful"
+    else
+        log "boostrap hook ($file) failed. Exiting..."
+        exit 1
+    fi
+done
 
 touch "$RAN_MARKER"
