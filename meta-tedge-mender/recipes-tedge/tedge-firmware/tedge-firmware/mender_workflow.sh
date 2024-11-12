@@ -138,6 +138,30 @@ executing() {
     log "Starting firmware update. Current partition is $(get_current_partition), so update will be applied to $next_partition"
 }
 
+convert_tedge_url() {
+    #
+    # Change url to a local url using the c8y proxy
+    #
+    url="$1"
+
+    partial_path=$(echo "$url" | sed 's|^http://[^/]*/||g' | sed 's|^https://[^/]*/||g')
+    c8y_proxy_host=$(tedge config get c8y.proxy.client.host)
+    c8y_proxy_port=$(tedge config get c8y.proxy.client.port)
+
+    # Only convert the url if it does not already use the c8y local proxy
+    case "$url" in
+        *"$c8y_proxy_host":"$c8y_proxy_port"*)
+            tedge_url="$url"
+            local_log "Skipping c8y local proxy url transformation. tedge_url=$tedge_url"
+            ;;
+        *)
+            tedge_url="http://${c8y_proxy_host}:${c8y_proxy_port}/c8y/$partial_path"
+            log "Converted to local url: $url => $tedge_url"
+            ;;
+    esac
+    echo "$tedge_url"
+}
+
 download() {
     url="$1"
 
@@ -155,16 +179,7 @@ download() {
             # it is still in alpha.
             #
             MANUAL_DOWNLOAD=1
-
-            #
-            # Change url to a local url using the c8y proxy
-            #
-            partial_path=$(echo "$url" | sed 's|https://[^/]*/||g')
-            c8y_proxy_host=$(tedge config get c8y.proxy.client.host)
-            c8y_proxy_port=$(tedge config get c8y.proxy.client.port)
-            tedge_url="http://${c8y_proxy_host}:${c8y_proxy_port}/c8y/$partial_path"
-
-            log "Converted to local url: $url => $tedge_url"
+            tedge_url=$(convert_tedge_url "$url")
             ;;
     esac
 
