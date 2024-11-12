@@ -178,13 +178,16 @@ download() {
     # Auto detect based on the url if the direct url can be used or not
     case "$url" in
         */inventory/binaries/*)
-            # FUTURE: The mender client 3.x currently checks for a Content-Length header in the response
-            # and fails if it is not present. Cumulocity IoT uses chunked Transfter-Encoding where the Content-Length
-            # is no included in the response headers, thus causing mender to fail.
-            # mender is currently being rewritten and seems to have support for proper Content-Range handling, however
-            # it is still in alpha.
+            # NOTE: The mender client 3.x currently checks for a Content-Length header in the response
+            # and fails if it is not present. Cumulocity IoT uses chunked Transfer-Encoding where the Content-Length
+            # is not included in the response headers, thus causing mender to fail, so the artifact must be downloaded
+            # manually.
             #
-            MANUAL_DOWNLOAD=1
+            # mender-update (aka mender 4.x) does not have this limitation.
+            #
+            if [ "$MENDER_CLI" = "mender" ]; then
+                MANUAL_DOWNLOAD=1
+            fi
             tedge_url=$(convert_tedge_url "$url")
             ;;
     esac

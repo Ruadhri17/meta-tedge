@@ -47,8 +47,9 @@ transfer_files() {
 
     # sudoers
     if [ -d /etc/sudoers.d ]; then
+        # Don't clobber any existing files
         progress "Copying sudoers.d config"
-        cp -af /etc/sudoers.d/* "${target}/etc/sudoers.d/"
+        cp -an /etc/sudoers.d/* "${target}/etc/sudoers.d/"
     fi
 
 
