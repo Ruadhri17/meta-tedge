@@ -16,6 +16,12 @@ if command -V sudo >/dev/null 2>&1; then
     SUDO="sudo"
 fi
 
+# Detect which mender cli is available. mender >= 4.x uses mender-update, and < 4.x uses mender
+MENDER_CLI="mender"
+if command -V mender-update >/dev/null 2>&1; then
+    MENDER_CLI=mender-update
+fi
+
 ACTION="$1"
 shift
 
@@ -203,9 +209,9 @@ download() {
 
 install() {
     url="$1"
-    log "Executing: mender install --reboot-exit-code '$url'"
+    log "Executing: $MENDER_CLI install --reboot-exit-code '$url'"
     EXIT_CODE="$OK"
-    $SUDO mender install --reboot-exit-code "$url" || EXIT_CODE="$?"
+    $SUDO $MENDER_CLI install --reboot-exit-code "$url" || EXIT_CODE="$?"
 
     case "$EXIT_CODE" in
         0)
@@ -222,9 +228,9 @@ install() {
 }
 
 commit() {
-    log "Executing: mender commit"
+    log "Executing: $MENDER_CLI commit"
     EXIT_CODE="$OK"
-    $SUDO mender commit || EXIT_CODE="$?"
+    $SUDO $MENDER_CLI commit || EXIT_CODE="$?"
 
     case "$EXIT_CODE" in
         0)
