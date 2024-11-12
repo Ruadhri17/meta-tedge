@@ -37,7 +37,7 @@ do_install () {
 
     # Allow sudo access
     install -d -m 0750 "${D}/etc/sudoers.d"
-    echo "tedge  ALL = (ALL) NOPASSWD: /usr/bin/mender, /usr/bin/tedgectl" > ${D}${sysconfdir}/sudoers.d/tedge-firmware
+    install -m 0644 "${WORKDIR}/tedge-firmware" "${D}${sysconfdir}/sudoers.d/"
 
     # FIXME: Check if there is a better place to do this
     if [ -d "${D}/var/lib/mosquitto" ]; then
