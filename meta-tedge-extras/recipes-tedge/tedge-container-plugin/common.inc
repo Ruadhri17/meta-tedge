@@ -26,6 +26,11 @@ do_install:append () {
     install -d ${D}${TEDGE_CONFIG_DIR}/sm-plugins
     ln --relative --symbolic ${D}${bindir}/tedge-container ${D}${TEDGE_CONFIG_DIR}/sm-plugins/container
     ln --relative --symbolic ${D}${bindir}/tedge-container ${D}${TEDGE_CONFIG_DIR}/sm-plugins/container-group
+
+    # Allow sudo access
+    install -d -m 0750 "${D}/etc/sudoers.d"
+    echo "tedge  ALL = (ALL) NOPASSWD: /usr/bin/tedge-container" > "${D}${sysconfdir}/sudoers.d/tedge-container-plugin"
+    chmod 0644 "${D}${sysconfdir}/sudoers.d/tedge-container-plugin"
 }
 
 FILES:${PN} += "\
@@ -36,4 +41,5 @@ FILES:${PN} += "\
     ${sysconfdir}/tedge-container-plugin/config.toml \
     ${TEDGE_CONFIG_DIR}/sm-plugins/container \
     ${TEDGE_CONFIG_DIR}/sm-plugins/container-group \
+    ${sysconfdir}/sudoers.d/tedge-container-plugin \
 "
