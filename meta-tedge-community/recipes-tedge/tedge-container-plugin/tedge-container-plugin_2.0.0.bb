@@ -8,6 +8,7 @@ GO_INSTALL = "${GO_IMPORT}"
 HOMEPAGE = "https://${GO_IMPORT}"
 SRC_URI = "git://${GO_IMPORT};branch=next;protocol=https"
 SRCREV = "db227609e2e08266b2a7decd652b52d5aa1656a7"
+PV = "2.0.0~rc5"
 
 RDEPENDS:${PN}-dev += " bash"
 
@@ -21,6 +22,7 @@ do_compile[network] = "1"
 # build executable instead of shared object
 GO_LINKSHARED = ""
 GOBUILDFLAGS:remove = "-buildmode=pie"
+GO_EXTRA_LDFLAGS:append = "-X ${GO_IMPORT}/cmd.buildVersion=${PV} -X ${GO_IMPORT}/cmd.buildBranch=next"
 
 inherit go-mod
 require common.inc
