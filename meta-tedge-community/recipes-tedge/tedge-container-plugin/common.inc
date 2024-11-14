@@ -1,6 +1,9 @@
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd', '', d)}
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d', '', d)}
 
+SYSTEMD_AUTO_ENABLE ?= "enable"
+SYSTEMD_SERVICE:${PN} = "tedge-container-plugin.service"
+
 do_install:append () {
     # Service files
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
