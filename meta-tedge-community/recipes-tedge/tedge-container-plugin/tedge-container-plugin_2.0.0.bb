@@ -11,6 +11,11 @@ SRCREV = "83d06458884e683f4905638e4ed116ccb9e79dee"
 
 RDEPENDS:${PN}-dev += " bash"
 
+DEPENDS += " tedge"
+RDEPENDS:${PN} += " tedge"
+
+TEDGE_CONFIG_DIR ?= "/etc/tedge"
+
 do_compile[network] = "1"
 
 # build executable instead of shared object
@@ -18,11 +23,8 @@ GO_LINKSHARED = ""
 GOBUILDFLAGS:remove = "-buildmode=pie"
 
 inherit go-mod
+require common.inc
 
-# This is just to make clear where this example is
-do_install:append() {
-    mv ${D}${bindir}/tedge-container-plugin ${D}${bindir}/tedge-container
-}
 
 ################################################################################
 LICENSE = "Apache-2.0"
