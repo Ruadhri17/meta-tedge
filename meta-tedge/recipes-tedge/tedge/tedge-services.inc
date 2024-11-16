@@ -6,8 +6,8 @@ inherit ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d', '', d
 do_install:append () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
 		install -d ${D}${systemd_system_unitdir}
-        for service in ${WORKDIR}/tedge-services/services/systemd/system/*.service; do
-            filename=$(basename "$service" ".service")
+        for service in ${WORKDIR}/tedge-services/services/systemd/system/*; do
+            filename=$(basename "$service" ".service" | cut -d. -f1)
             if ${@bb.utils.contains('TEDGE_EXCLUDE', "$filename", 'false', 'true', d)}; then
                 install -m 0644 $service ${D}${systemd_system_unitdir}
             fi
