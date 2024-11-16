@@ -34,10 +34,41 @@ do_install:append () {
     fi
 }
 
+PACKAGES += "${PN}-agent ${PN}-mapper-c8y ${PN}-mapper-aws ${PN}-mapper-az ${PN}-mapper-collectd ${PN}-c8y-firmware-plugin"
+
 FILES:${PN} += "\
-    ${systemd_system_unitdir}/* \
     ${sysconfdir}/init.d/* \
     ${TEDGE_CONFIG_DIR}/system.toml \
     ${sysconfdir}/tedgectl/env \
     ${bindir}/tedgectl \
 "
+
+FILES:${PN}-agent += "\
+    ${systemd_system_unitdir}/tedge-agent.service \
+"
+FILES:${PN}-mapper-c8y += "\
+    ${systemd_system_unitdir}/tedge-mapper-c8y.service \
+"
+FILES:${PN}-mapper-aws += "\
+    ${systemd_system_unitdir}/tedge-mapper-aws.service \
+"
+FILES:${PN}-mapper-az += "\
+    ${systemd_system_unitdir}/tedge-mapper-az.service \
+"
+FILES:${PN}-mapper-collectd += "\
+    ${systemd_system_unitdir}/tedge-mapper-collectd.service \
+"
+FILES:${PN}-c8y-firmware-plugin += "\
+    ${systemd_system_unitdir}/c8y-firmware-plugin.service \
+"
+
+SYSTEMD_PACKAGES = "${PN}-agent ${PN}-mapper-c8y ${PN}-mapper-aws ${PN}-mapper-az ${PN}-mapper-collectd ${PN}-c8y-firmware-plugin"
+SYSTEMD_SERVICE:${PN}-agent = "tedge-agent.service"
+SYSTEMD_SERVICE:${PN}-mapper-c8y = "tedge-mapper-c8y.service"
+SYSTEMD_SERVICE:${PN}-mapper-aws = "tedge-mapper-aws.service"
+SYSTEMD_SERVICE:${PN}-mapper-az = "tedge-mapper-az.service"
+SYSTEMD_SERVICE:${PN}-mapper-collectd = "tedge-mapper-collectd.service"
+SYSTEMD_SERVICE:${PN}-c8y-firmware-plugin = "c8y-firmware-plugin.service"
+
+# Disable c8y-firmware-plugin as this is deprecated
+SYSTEMD_AUTO_ENABLE:${PN}-c8y-firmware-plugin = "disable"
