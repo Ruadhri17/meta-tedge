@@ -118,6 +118,25 @@ wait_for_network() {
     return 1
 }
 
+enable_mark_good_service() {
+    # Enable rauc-mark-good service so that it will reset the boot counter when
+    # the device is rebooted in normal operation (e.g. not whilst doing a firmware update)
+    if command -V systemctl >/dev/null 2>&1; then
+        $SUDO systemctl unmask rauc-mark-good.service ||:
+        $SUDO systemctl enable rauc-mark-good.service ||:
+    fi
+}
+
+disable_mark_good_service() {
+    # Disable/mask rauc-mark-good service to prevent the mark-good service from confirming
+    # the firmware update before the image has been verified
+    if command -V systemctl >/dev/null 2>&1; then
+        $SUDO systemctl stop rauc-mark-good.service ||:
+        $SUDO systemctl disable rauc-mark-good.service ||:
+        $SUDO systemctl mask rauc-mark-good.service ||:
+    fi
+}
+
 load_rauc_variables() {
     eval "$(rauc status --output-format shell)"
 }
@@ -235,6 +254,9 @@ install() {
 verify() {
     log "Checking new partition health"
 
+    log "Disabling rauc-mark-good.service as thin-edge.io is verifying the image"
+    disable_mark_good_service
+
     MAPPERS="c8y az aws"
 
     is_mapper_connected() {
@@ -317,6 +339,9 @@ commit() {
             # Save firmware meta information to file (for reading on startup during normal operation)
             local_log "Saving firmware info to $FIRMWARE_META_FILE"
             printf 'FIRMWARE_NAME=%s\nFIRMWARE_VERSION=%s\nFIRMWARE_URL=%s\n' "$FIRMWARE_NAME" "$FIRMWARE_VERSION" "$FIRMWARE_URL" > "$FIRMWARE_META_FILE"
+
+            log "Enabling rauc-mark-good.service"
+            enable_mark_good_service
             ;;
         2)
             log "Nothing to commit (update is not in progress)"
@@ -324,6 +349,9 @@ commit() {
             # Still mark partition as good, otherwise it could end up having no good partitions
             $SUDO rauc status mark-good ||:
             set_reason "Nothing to commit (update is not in progress)"
+
+            log "Enabling rauc-mark-good.service"
+            enable_mark_good_service
             ;;
         *)
             log "rauc returned code: $EXIT_CODE. Rolling back to previous partition"
