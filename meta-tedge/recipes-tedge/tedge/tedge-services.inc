@@ -6,8 +6,8 @@ inherit ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d', '', d
 do_install:append () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
 		install -d ${D}${systemd_system_unitdir}
-        for service in ${WORKDIR}/tedge-services/services/systemd/system/*.service; do
-            filename=$(basename "$service" ".service")
+        for service in ${WORKDIR}/tedge-services/services/systemd/system/*; do
+            filename=$(basename "$service" ".service" | cut -d. -f1)
             if ${@bb.utils.contains('TEDGE_EXCLUDE', "$filename", 'false', 'true', d)}; then
                 install -m 0644 $service ${D}${systemd_system_unitdir}
             fi
@@ -48,6 +48,8 @@ FILES:${PN}-agent += "\
 "
 FILES:${PN}-mapper-c8y += "\
     ${systemd_system_unitdir}/tedge-mapper-c8y.service \
+    ${systemd_system_unitdir}/c8y-remote-access-plugin@.service \
+    ${systemd_system_unitdir}/c8y-remote-access-plugin.socket \
 "
 FILES:${PN}-mapper-aws += "\
     ${systemd_system_unitdir}/tedge-mapper-aws.service \
@@ -64,7 +66,7 @@ FILES:${PN}-c8y-firmware-plugin += "\
 
 SYSTEMD_PACKAGES = "${PN}-agent ${PN}-mapper-c8y ${PN}-mapper-aws ${PN}-mapper-az ${PN}-mapper-collectd ${PN}-c8y-firmware-plugin"
 SYSTEMD_SERVICE:${PN}-agent = "tedge-agent.service"
-SYSTEMD_SERVICE:${PN}-mapper-c8y = "tedge-mapper-c8y.service"
+SYSTEMD_SERVICE:${PN}-mapper-c8y = "tedge-mapper-c8y.service c8y-remote-access-plugin@.service c8y-remote-access-plugin.socket"
 SYSTEMD_SERVICE:${PN}-mapper-aws = "tedge-mapper-aws.service"
 SYSTEMD_SERVICE:${PN}-mapper-az = "tedge-mapper-az.service"
 SYSTEMD_SERVICE:${PN}-mapper-collectd = "tedge-mapper-collectd.service"
