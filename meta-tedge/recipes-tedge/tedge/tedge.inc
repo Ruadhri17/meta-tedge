@@ -16,7 +16,7 @@ LICENSE = "Apache-2.0"
 inherit logging
 inherit cargo useradd
 
-RDEPENDS:${PN} = " mosquitto ca-certificates libgcc glibc-utils libxcrypt sudo collectd"
+RDEPENDS:${PN} = "${PN}-agent ${PN}-mapper-c8y ${PN}-mapper-aws ${PN}-mapper-az ${PN}-mapper-collectd mosquitto ca-certificates libgcc glibc-utils libxcrypt sudo collectd"
 
 # This prevents disabling crates.io registry in cargo_do_configure task and
 # allows cargo to fetch dependencies during the do_compile step.
