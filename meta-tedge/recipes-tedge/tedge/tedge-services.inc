@@ -8,7 +8,7 @@ do_install:append () {
 		install -d ${D}${systemd_system_unitdir}
         for service in ${WORKDIR}/tedge-services/services/systemd/system/*.service; do
             filename=$(basename "$service" ".service")
-            if ${@bb.utils.contains('TEDGE_EXCLUDE', '$filename', 'false', 'true', d)}; then
+            if ${@bb.utils.contains('TEDGE_EXCLUDE', "$filename", 'false', 'true', d)}; then
                 install -m 0755 $service ${D}${systemd_system_unitdir}
             fi
         done 
@@ -16,7 +16,7 @@ do_install:append () {
         install -d ${D}${sysconfdir}/init.d
         for service in ${WORKDIR}/tedge-services/services/sysvinit-yocto/init.d/*; do
             filename=$(basename -- "$service")
-            if ${@bb.utils.contains('TEDGE_EXCLUDE', '$filename', 'false', 'true', d)}; then
+            if ${@bb.utils.contains('TEDGE_EXCLUDE', "$filename", 'false', 'true', d)}; then
                 install -m 0755 $service ${D}${sysconfdir}/init.d
             fi
         done 
