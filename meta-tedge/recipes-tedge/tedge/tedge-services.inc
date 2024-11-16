@@ -9,7 +9,7 @@ do_install:append () {
         for service in ${WORKDIR}/tedge-services/services/systemd/system/*.service; do
             filename=$(basename "$service" ".service")
             if ${@bb.utils.contains('TEDGE_EXCLUDE', "$filename", 'false', 'true', d)}; then
-                install -m 0755 $service ${D}${systemd_system_unitdir}
+                install -m 0644 $service ${D}${systemd_system_unitdir}
             fi
         done 
 	elif ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}; then
