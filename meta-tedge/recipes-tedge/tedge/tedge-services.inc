@@ -48,6 +48,8 @@ FILES:${PN}-agent += "\
 "
 FILES:${PN}-mapper-c8y += "\
     ${systemd_system_unitdir}/tedge-mapper-c8y.service \
+    ${systemd_system_unitdir}/c8y-remote-access-plugin@.service \
+    ${systemd_system_unitdir}/c8y-remote-access-plugin.socket \
 "
 FILES:${PN}-mapper-aws += "\
     ${systemd_system_unitdir}/tedge-mapper-aws.service \
@@ -64,7 +66,7 @@ FILES:${PN}-c8y-firmware-plugin += "\
 
 SYSTEMD_PACKAGES = "${PN}-agent ${PN}-mapper-c8y ${PN}-mapper-aws ${PN}-mapper-az ${PN}-mapper-collectd ${PN}-c8y-firmware-plugin"
 SYSTEMD_SERVICE:${PN}-agent = "tedge-agent.service"
-SYSTEMD_SERVICE:${PN}-mapper-c8y = "tedge-mapper-c8y.service"
+SYSTEMD_SERVICE:${PN}-mapper-c8y = "tedge-mapper-c8y.service c8y-remote-access-plugin@.service c8y-remote-access-plugin.socket"
 SYSTEMD_SERVICE:${PN}-mapper-aws = "tedge-mapper-aws.service"
 SYSTEMD_SERVICE:${PN}-mapper-az = "tedge-mapper-az.service"
 SYSTEMD_SERVICE:${PN}-mapper-collectd = "tedge-mapper-collectd.service"
