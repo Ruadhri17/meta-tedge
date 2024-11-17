@@ -136,6 +136,12 @@ if [ -d /etc/tedge ]; then
     fi
 fi
 
+# copy default tedge plugin configuration (from readonly rootfs)
+if [ -d "${target}/etc/tedge-default/plugins" ] && [ -d "/data/tedge/plugins" ]; then
+    progress "Copying default plugin configurations from ${target}/etc/tedge-default/plugins to /data/tedge/plugins/ (no clobber)"
+    cp -npv "${target}/etc/tedge-default/plugins/"* "/data/tedge/plugins/" ||:
+fi
+
 # ssh authorized keys
 if [ -d /home/root/.ssh ]; then
     if [ -f /home/root/.ssh/authorized_keys ]; then

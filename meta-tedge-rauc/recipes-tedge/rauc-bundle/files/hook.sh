@@ -1,11 +1,19 @@
 #!/bin/sh
 
+LOG_FILE=/data/rauc-rootfs-hook.log
+
 progress() {
     echo "$@" >&2
+    echo "$@" >> "$LOG_FILE"
 }
 
 transfer_files() {
     target="$1"
+
+    if [ -f "$LOG_FILE" ]; then
+        # keep last n-1 logs
+        mv "$LOG_FILE" "${LOG_FILE}.1"
+    fi
 
     #
     # Retain ssh server keys from the current root
@@ -94,6 +102,12 @@ transfer_files() {
             progress "Copying $VAR_TEDGE files"
             cp -Rfa "$VAR_TEDGE"/* "$NEW_VAR_TEDGE"
         fi
+    fi
+
+    # copy default tedge plugin configuration (from readonly rootfs)
+    if [ -d "${target}/etc/tedge-default/plugins" ] && [ -d "/data/tedge/plugins" ]; then
+        progress "Copying default plugin configurations from ${target}/etc/tedge-default/plugins to /data/tedge/plugins/ (no clobber)"
+        cp -npv "${target}/etc/tedge-default/plugins/"* "/data/tedge/plugins/" ||: >> "$LOG_FILE" 2>&1
     fi
 
     # ssh authorized keys
