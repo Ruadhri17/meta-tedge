@@ -15,6 +15,8 @@ RDEPENDS:${PN}-dev += " bash"
 DEPENDS += " tedge"
 RDEPENDS:${PN} += " tedge"
 
+TEDGE_CONFIG_DIR ?= "/etc/tedge"
+
 def tedge_config_dir(d):
     return d.getVar('TEDGE_CONFIG_SYMLINK', True) or d.getVar('TEDGE_CONFIG_DIR', True)
 
