@@ -110,6 +110,11 @@ transfer_files() {
         cp -npv "${target}/etc/tedge-default/plugins/"* "/data/tedge/plugins/" ||: >> "$LOG_FILE" 2>&1
     fi
 
+    if [ -d "${target}/etc/tedge-default/mosquitto-conf" ] && [ -d "/data/tedge/mosquitto-conf" ]; then
+        progress "Copying default mosquitto configurations from ${target}/etc/tedge-default/mosquitto-conf to /data/tedge/mosquitto-conf/ (no clobber)"
+        cp -npv "${target}/etc/tedge-default/mosquitto-conf/"* "/data/tedge/mosquitto-conf/" ||:
+    fi
+
     # ssh authorized keys
     if [ -d /home/root/.ssh ]; then
         if [ -f /home/root/.ssh/authorized_keys ]; then
