@@ -1,0 +1,23 @@
+From 68a6c2133353f8b3603c8dfdd4e08432bc94e023 Mon Sep 17 00:00:00 2001
+From: Reuben Miller <reuben.d.miller@gmail.com>
+Date: Tue, 19 Nov 2024 22:27:47 +0100
+Subject: [PATCH] set restart sec to bypass systemd preventing the service
+ from starting due to failing on boot due to the listener ip addresses
+ not being available
+
+---
+ service/systemd/mosquitto.service.notify | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/service/systemd/mosquitto.service.notify b/service/systemd/mosquitto.service.notify
+index 06772dd..fd18692 100644
+--- a/service/systemd/mosquitto.service.notify
++++ b/service/systemd/mosquitto.service.notify
+@@ -10,6 +10,7 @@ NotifyAccess=main
+ ExecStart=/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+ ExecReload=/bin/kill -HUP $MAINPID
+ Restart=on-failure
++RestartSec=5
+ ExecStartPre=/bin/mkdir -m 740 -p /var/log/mosquitto
+ ExecStartPre=/bin/chown mosquitto:mosquitto /var/log/mosquitto
+ ExecStartPre=/bin/mkdir -m 740 -p /run/mosquitto
