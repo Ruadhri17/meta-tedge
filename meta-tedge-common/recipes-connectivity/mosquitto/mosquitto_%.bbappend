@@ -1,5 +1,9 @@
 inherit useradd
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI += "file://0001-set-restart-sec-to-prevent-systemd-prevent-the-servi.patch"
+
 # Used fix uid/gid to avoid permission problems on /data
 GROUPADD_PARAM:${PN} = "--system --gid 960 mosquitto"
 USERADD_PARAM:${PN} = "--system --no-create-home --shell /bin/false --uid 961 --gid 960 mosquitto"
