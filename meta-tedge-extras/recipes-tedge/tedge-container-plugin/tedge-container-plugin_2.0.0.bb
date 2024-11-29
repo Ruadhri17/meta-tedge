@@ -7,8 +7,8 @@ GO_INSTALL = "${GO_IMPORT}"
 
 HOMEPAGE = "https://${GO_IMPORT}"
 SRC_URI = "git://${GO_IMPORT};branch=next;protocol=https"
-SRCREV = "025e8f1a8b06c8f1c45b17512030f830a9fd0428"
-PV = "2.0.0~rc8"
+SRCREV = "fc393f94086e03732ca08a5c81e8e9f83d9f48c5"
+PV = "2.0.0~rc24"
 
 RDEPENDS:${PN}-dev += " bash"
 
@@ -54,6 +54,9 @@ LIC_FILES_CHKSUM = " \
     file://src/${GO_IMPORT}/vendor/github.com/gorilla/websocket/LICENSE;md5=c007b54a1743d596f46b2748d9f8c044 \
     file://src/${GO_IMPORT}/vendor/github.com/mitchellh/mapstructure/LICENSE;md5=3f7765c3d4f58e1f84c4313cecf0f5bd \
     file://src/${GO_IMPORT}/vendor/github.com/pelletier/go-toml/v2/LICENSE;md5=390892c6562af0d807e527b06d635f94 \
+    file://src/${GO_IMPORT}/vendor/github.com/xeipuuv/gojsonschema/LICENSE-APACHE-2.0.txt;md5=f7a6312e0b85b17786de3ae15ab42bed \
+    file://src/${GO_IMPORT}/vendor/github.com/xeipuuv/gojsonreference/LICENSE-APACHE-2.0.txt;md5=f7a6312e0b85b17786de3ae15ab42bed \
+    file://src/${GO_IMPORT}/vendor/github.com/xeipuuv/gojsonpointer/LICENSE-APACHE-2.0.txt;md5=f7a6312e0b85b17786de3ae15ab42bed \
     file://src/${GO_IMPORT}/vendor/github.com/davecgh/go-spew/LICENSE;md5=c06795ed54b2a35ebeeb543cd3a73e56 \
     file://src/${GO_IMPORT}/vendor/github.com/reubenmiller/go-c8y/LICENSE;md5=5ad50ede22fd4ba20c16a11b227eccac \
     file://src/${GO_IMPORT}/vendor/github.com/felixge/httpsnoop/LICENSE.txt;md5=684da2bf3eed8fc8860e75ad84638225 \
@@ -70,18 +73,22 @@ LIC_FILES_CHKSUM = " \
     file://src/${GO_IMPORT}/vendor/github.com/hashicorp/hcl/LICENSE;md5=b278a92d2c1509760384428817710378 \
     file://src/${GO_IMPORT}/vendor/github.com/h2non/filetype/LICENSE;md5=d4004d1b897e7c064b57b0f7127643d6 \
     file://src/${GO_IMPORT}/vendor/github.com/stretchr/testify/LICENSE;md5=188f01994659f3c0d310612333d2a26f \
+    file://src/${GO_IMPORT}/vendor/github.com/go-viper/mapstructure/v2/LICENSE;md5=3f7765c3d4f58e1f84c4313cecf0f5bd \
     file://src/${GO_IMPORT}/vendor/github.com/op/go-logging/LICENSE;md5=d01d49c2816e0112c83b3a9f77029b8a \
     file://src/${GO_IMPORT}/vendor/github.com/google/go-querystring/LICENSE;md5=29f156828ca5f2df0d1c12543a75f12a \
     file://src/${GO_IMPORT}/vendor/github.com/go-logr/stdr/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327 \
     file://src/${GO_IMPORT}/vendor/github.com/go-logr/logr/LICENSE;md5=e3fc50a88d0a364313df4b21ef20c29e \
     file://src/${GO_IMPORT}/vendor/github.com/Microsoft/go-winio/LICENSE;md5=69205ff73858f2c22b2ca135b557e8ef \
     file://src/${GO_IMPORT}/vendor/github.com/distribution/reference/LICENSE;md5=d2794c0df5b907fdace235a619d80314 \
+    file://src/${GO_IMPORT}/vendor/github.com/compose-spec/compose-go/v2/dotenv/LICENSE;md5=b5d436f39fbc753d5ce95d08b2f1c90b \
+    file://src/${GO_IMPORT}/vendor/github.com/compose-spec/compose-go/v2/LICENSE;md5=9740d093a080530b5c5c6573df9af45a \
     file://src/${GO_IMPORT}/vendor/github.com/tidwall/gjson/LICENSE;md5=f1ccda76a282fada49760e27335f1c28 \
     file://src/${GO_IMPORT}/vendor/github.com/tidwall/match/LICENSE;md5=f1ccda76a282fada49760e27335f1c28 \
     file://src/${GO_IMPORT}/vendor/github.com/tidwall/pretty/LICENSE;md5=898bc94f87439245e8cf1c5797098e90 \
     file://src/${GO_IMPORT}/vendor/github.com/juju/errors/LICENSE;md5=2d1c30374313ae40df7772dc92ef9fd5 \
     file://src/${GO_IMPORT}/vendor/github.com/magiconair/properties/LICENSE.md;md5=714beb7325ffa89d5a68d936a3bb04e5 \
     file://src/${GO_IMPORT}/vendor/github.com/sourcegraph/conc/LICENSE;md5=c001385e94f81477d77ffaf4321c647d \
+    file://src/${GO_IMPORT}/vendor/github.com/sirupsen/logrus/LICENSE;md5=8dadfef729c08ec4e631c4f6fc5d43a0 \
     file://src/${GO_IMPORT}/vendor/github.com/spf13/afero/LICENSE.txt;md5=920d76114a32b0fb75b3f2718c5a91be \
     file://src/${GO_IMPORT}/vendor/github.com/spf13/cast/LICENSE;md5=67fac7567cbf6ba946e5576d590b1ed4 \
     file://src/${GO_IMPORT}/vendor/github.com/spf13/viper/LICENSE;md5=67fac7567cbf6ba946e5576d590b1ed4 \
@@ -100,5 +107,6 @@ LIC_FILES_CHKSUM = " \
     file://src/${GO_IMPORT}/vendor/github.com/obeattie/ohmyglob/LICENSE;md5=e8fe0b978e1aaf903b70cc20638221c0 \
     file://src/${GO_IMPORT}/vendor/github.com/inconshreveable/mousetrap/LICENSE;md5=7ea8c6c3cf90c1ca8494325e32c35579 \
     file://src/${GO_IMPORT}/vendor/github.com/gogo/protobuf/LICENSE;md5=38be95f95200434dc208e2ee3dab5081 \
+    file://src/${GO_IMPORT}/vendor/github.com/mattn/go-shellwords/LICENSE;md5=e5116fc268f5118168ff06a271b50ef9 \
     file://src/${GO_IMPORT}/vendor/github.com/pkg/errors/LICENSE;md5=6fe682a02df52c6653f33bd0f7126b5a \
 "
