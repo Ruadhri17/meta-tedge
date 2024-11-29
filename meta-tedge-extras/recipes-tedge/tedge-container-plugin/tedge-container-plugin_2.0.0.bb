@@ -12,6 +12,9 @@ PV = "2.0.0~rc24"
 
 RDEPENDS:${PN}-dev += " bash"
 
+# ignore files with s6-overlay shebang, e.g. /command/execlineb
+INSANE_SKIP:${PN}-dev += " file-rdeps"
+
 DEPENDS += " tedge"
 RDEPENDS:${PN} += " tedge"
 
