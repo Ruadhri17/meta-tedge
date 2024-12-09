@@ -1,0 +1,74 @@
+name: build
+
+on:
+  push:
+    branches:
+      - kirkstone
+  workflow_dispatch:
+  pull_request:
+    types: [ labeled ]
+
+env:
+  SSTATE_DIR: /data/yocto/sstate-cache
+  DL_DIR: /data/yocto/downloads
+
+jobs:
+  build:
+    if: github.event_name != 'pull_request' || github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ci')
+    name: Build ${{ matrix.project }} ${{ matrix.machine }}
+    runs-on:
+      - self-hosted
+      - Linux
+      - X64
+      - offsite_yocto
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - tedge-rauc
+          - tedge-mender
+        machine:
+          - raspberrypi3-64
+          - raspberrypi4-64
+        include:
+          - project: tedge-rauc
+            image_name: core-image-tedge-rauc
+            image_ext: "wic.bz2"
+            update_ext: "raucb"
+            manifest_ext: "manifest"
+
+          - project: tedge-mender
+            image_name: core-image-tedge-mender
+            image_ext: "sdimg.bz2"
+            update_ext: "mender"
+            manifest_ext: "manifest"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Only install tooling if not running on a self-hosted runner as the tools are already pre-installed
+      - uses: taiki-e/install-action@just
+        if: ${{ !startsWith(runner.name, 'tedge') }}
+      - uses: actions/setup-python@v5
+        if: ${{ !startsWith(runner.name, 'tedge') }}
+        with:
+          python-version: '3.8'
+      - run: pip3 install kas
+        if: ${{ !startsWith(runner.name, 'tedge') }}
+
+      - name: Build
+        run: just build-project projects/${{ matrix.project }}.yaml
+        working-directory: kas
+        env:
+          KAS_MACHINE: ${{ matrix.machine }}
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+            name: ${{ matrix.image_name }}_${{ matrix.machine }}
+            path: |
+              kas/build/tmp/deploy/images/${{ matrix.machine }}/${{ matrix.image_name }}*${{ matrix.machine }}_*.${{ matrix.image_ext }}
+              kas/build/tmp/deploy/images/${{ matrix.machine }}/${{ matrix.image_name }}*${{ matrix.machine }}_*.${{ matrix.update_ext }}
+              kas/build/tmp/deploy/images/${{ matrix.machine }}/${{ matrix.image_name }}*${{ matrix.machine }}_*.${{ matrix.manifest_ext }}
