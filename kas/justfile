@@ -33,7 +33,7 @@ clean-all:
 # You need to run this if you are working on a branch and would like up-to-date
 # changes
 update-lock file *args="": init
-    python3 -m kas dump --update --lock {{args}} {{file}} --inplace
+    python3 -m kas dump --update --indent 2 --lock {{args}} {{file}} --inplace
 
 # Build project from a given file
 build-project file *args="": init
