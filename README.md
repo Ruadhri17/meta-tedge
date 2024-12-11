@@ -4,7 +4,7 @@ This meta layer contains all the recipes needed to build [thin-edge.io](https://
 
 ## How to start
 
-Check out the [meta-tedge-project](https://github.com/thin-edge/meta-tedge-project) for some example projects which make use of the thin-edge.io layer to create an image which includes Over-the-Air update support. The projects use [kas](https://github.com/siemens/kas) to make it easy to setup your yocto environment (e.g. checkout all of the required layers) and build your image in a single commands.
+Check out the [kas folder and README](./kas/README.md) for some example projects which make use of the thin-edge.io layer to create an image which includes Over-the-Air update support. The projects use [kas](https://github.com/siemens/kas) to make it easy to setup your Yocto environment (e.g. checkout all of the required layers) and build your image in a single commands.
 
 For more user-friendly documentation, check out the [official thin-edge.io documentation](https://thin-edge.github.io/thin-edge.io/extend/firmware-management/building-image/yocto/).
 
@@ -14,8 +14,8 @@ The repository follows the release-named branch strategy. Only LTS releases are 
 
 | Yocto Release | thin-edge version | Branch Name | Branch Status |
 | :- | :- | :- | :- |
-| Scarthgap | 1.0.1 | scarthgap | Active and maintained |
-| Kirkstone | 1.1.1 | kirkstone | Active and maintained |
+| Kirkstone | 1.x | kirkstone | Active and maintained |
+| Scarthgap | 1.x | scarthgap | In development (soon to be supported) |
 
 ## Dependencies
 
