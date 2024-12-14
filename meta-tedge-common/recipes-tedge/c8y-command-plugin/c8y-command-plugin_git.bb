@@ -1,5 +1,5 @@
 SRC_URI += "git://git@github.com/thin-edge/c8y-command-plugin.git;protocol=https;branch=main"
-SRCREV = "${AUTOREV}"
+SRCREV = "ef9a9e1d76c3a67ec56243658ce6a1b6b42799db"
 
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = " \
