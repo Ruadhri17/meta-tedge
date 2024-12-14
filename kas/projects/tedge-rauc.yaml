@@ -7,6 +7,7 @@ header:
     - ../config/rauc-raspberrypi.yaml
     - ../config/package-management.yaml
     - ../config/tedge-docker.yaml
+    - ../config/tedge-nodered.yaml
 
 machine: raspberrypi4-64
 distro: poky
