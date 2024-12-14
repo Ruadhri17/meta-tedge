@@ -6,6 +6,7 @@ header:
     - ../config/mender-qemu.yaml
     - ../config/package-management.yaml
     - ../config/tedge-docker.yaml
+    - ../config/tedge-nodered.yaml
 
 machine: qemux86-64
 distro: poky
