@@ -28,8 +28,11 @@ jobs:
           - tedge-rauc
           - tedge-mender
         machine:
-          - raspberrypi3-64
-          - raspberrypi4-64
+          - raspberrypi
+          - raspberrypi2
+          # RaspberryPi 64 bit: 3b, 4, 5, zero2w, cm3, cm4, cm4s
+          # https://git.yoctoproject.org/meta-raspberrypi/tree/conf/machine/raspberrypi-armv8.conf?h=master
+          - raspberrypi-armv8
         include:
           - project: tedge-rauc
             image_name: core-image-tedge-rauc
