@@ -6,9 +6,6 @@ IMAGE_INSTALL:append = " \
     ${@bb.utils.contains('INIT_MANAGER','systemd','tedge-sethostname','',d)} \
 "
 
-# Add Network Manager
-IMAGE_INSTALL += "networkmanager networkmanager-bash-completion networkmanager-nmtui monit"
-
 # Optimizations for RAUC adaptive method 'block-hash-index'
 # rootfs image size must to be 4K-aligned
 # reference: https://github.com/rauc/meta-rauc-community/blob/master/meta-rauc-qemux86/recipes-core/images/core-image-minimal.bbappend

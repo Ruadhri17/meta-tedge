@@ -5,6 +5,8 @@ header:
     - ../config/common.yaml
     - ../config/raspberrypi.yaml
     - ../config/rauc-raspberrypi.yaml
+    - ../config/network.yaml
+    - ../config/monitor.yaml
     - ../config/package-management.yaml
     - ../config/tedge-docker.yaml
     - ../config/tedge-nodered.yaml
