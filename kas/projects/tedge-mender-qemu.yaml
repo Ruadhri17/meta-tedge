@@ -4,6 +4,8 @@ header:
   includes:
     - ../config/common.yaml
     - ../config/mender-qemu.yaml
+    - ../config/network.yaml
+    - ../config/monitor.yaml
     - ../config/package-management.yaml
     - ../config/tedge-docker.yaml
     - ../config/tedge-nodered.yaml
