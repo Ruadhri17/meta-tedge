@@ -15,7 +15,7 @@ fi
 if [ -n "$KAS_MACHINE" ]; then
     MACHINE="$KAS_MACHINE"
 else
-    MACHINE="${MACHINE:-raspberrypi4-64}"
+    MACHINE="${MACHINE:-raspberrypi-armv8}"
 fi
 
 SEARCH_DIR="build/tmp/deploy/images/$MACHINE"

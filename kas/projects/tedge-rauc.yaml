@@ -11,7 +11,7 @@ header:
     - ../config/tedge-docker.yaml
     - ../config/tedge-nodered.yaml
 
-machine: raspberrypi4-64
+machine: raspberrypi-armv8
 distro: poky
 target: rauc-update-bundle
 
