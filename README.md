@@ -1,6 +1,6 @@
 # meta-tedge
 
-This meta layer contains all the recipes needed to build [thin-edge.io](https://thin-edge.io) into [Yocto](https://www.yoctoproject.org) image.
+This meta layer contains all the recipes needed to build [thin-edge.io](https://thin-edge.io) into a [Yocto](https://www.yoctoproject.org) image.
 
 ## How to start
 
@@ -16,10 +16,6 @@ The repository follows the release-named branch strategy. Only LTS releases are 
 | :- | :- | :- | :- |
 | Kirkstone | 1.x | kirkstone | Active and maintained |
 | Scarthgap | 1.x | scarthgap | In development (soon to be supported) |
-
-## Dependencies
-
-Currently [git-lfs](https://github.com/git-lfs/git-lfs) is required to build the layer, however this dependency will be removed in the near future. Until then, please install git-lfs following the [official git-lfs instructions for linux](https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md).
 
 ## Contributing
 
