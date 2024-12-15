@@ -2,10 +2,6 @@
 header:
   version: 14
 
-bblayers_conf_header:
-  meta-common: |
-    POKY_BBLAYERS_CONF_VERSION = "2"
-
 local_conf_header:
   meta-monitor: |
-    IMAGE_INSTALL += "monit"
+    IMAGE_INSTALL:append = " monit"
