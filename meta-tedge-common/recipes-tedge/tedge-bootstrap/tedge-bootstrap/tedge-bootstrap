@@ -52,7 +52,7 @@ RUN_PARTS="/usr/share/tedge-bootstrap/scripts.d"
 NAME_FILTER="[0-9][0-9]_*"
 
 _NEWLINE=$(printf '\n')
-find -L "$RUN_PARTS" -type f -name "$NAME_FILTER" -perm 755 | while IFS="$_NEWLINE" read -r file
+find -L "$RUN_PARTS" -type f -name "$NAME_FILTER" -perm 755 | sort -V | while IFS="$_NEWLINE" read -r file
 do
     echo "Executing bootstrap script: $file" >&2
     if "$file" "$DEVICE_ID"; then
