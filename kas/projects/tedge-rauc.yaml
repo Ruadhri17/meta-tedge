@@ -23,7 +23,7 @@ env:
 
 defaults:
   repos:
-    branch: kirkstone
+    branch: scarthgap
 
 repos:
   poky:
@@ -50,13 +50,9 @@ repos:
 
   meta-rauc-community:
     url: "https://github.com/thin-edge/meta-rauc-community"
-    branch: kirkstone-fork
+    branch: scarthgap-fork
     layers:
       meta-rauc-raspberrypi:
-
-  meta-rust:
-    url: "https://github.com/meta-rust/meta-rust"
-    branch: master
 
   meta-tedge:
     path: ../../
@@ -67,9 +63,9 @@ repos:
       meta-tedge-extras:
       meta-raspberrypi:
 
-  meta-lts-mixins-go:
-    url: "https://github.com/moto-timo/meta-lts-mixins.git"
-    branch: kirkstone/go
+  meta-lts-mixins-rust:
+    url: "git://git.yoctoproject.org/meta-lts-mixins"
+    branch: scarthgap/rust
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
