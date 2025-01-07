@@ -89,13 +89,6 @@ SRC_URI[armv7.md5sum] = "$(get_tedge_md5_checksum "thinedge/tedge-${tedge_channe
 SRC_URI[x86_64.md5sum] = "$(get_tedge_md5_checksum "thinedge/tedge-${tedge_channel}" "amd64" "$tedge_version")"
 SRC_URI[riscv64.md5sum] = "$(get_tedge_md5_checksum "thinedge/tedge-${tedge_channel}" "riscv64" "$tedge_version")"
 
-# Init manager variables
-INIT_REPO_CHANNEL = "$(basename "$community_repo")"
-INIT_VERSION = "$services_version"
-SRC_URI[openrc.md5sum] = "$(get_services_checksum "$community_repo" "$services_version" "tedge-openrc")"
-SRC_URI[systemd.md5sum] = "$(get_services_checksum "$community_repo" "$services_version" "tedge-systemd")"
-SRC_URI[sysvinit.md5sum] = "$(get_services_checksum "$community_repo" "$services_version" "tedge-sysvinit-yocto")"
-
 require tedge.inc
 EOT
 
@@ -126,9 +119,7 @@ EOT
     # Generate BB file
     tedge_bb_file="meta-tedge/recipes-tedge/tedge/tedge_${tedge_version}.bb"
     cat << EOT | tee "$tedge_bb_file" >&2
-SRCREV_tedge = "$COMMIT_HASH"
-SRCREV_tedge-services = "\${AUTOREV}"
-SRCREV_FORMAT = "tedge"
+SRCREV = "$COMMIT_HASH"
 S = "\${WORKDIR}/git"
 
 SRC_URI += "\\

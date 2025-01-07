@@ -1,6 +1,4 @@
-SRCREV_tedge = "9cf69044581fc4046d52009f909b41af40124a95"
-SRCREV_tedge-services = "${AUTOREV}"
-SRCREV_FORMAT = "tedge"
+SRCREV = "9cf69044581fc4046d52009f909b41af40124a95"
 S = "${WORKDIR}/git"
 
 SRC_URI += "\

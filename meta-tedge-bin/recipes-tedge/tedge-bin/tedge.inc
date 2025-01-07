@@ -85,22 +85,7 @@ def get_tedge_pkg(d):
         raise bb.parse.SkipPackage("Target architecture '%s' is not supported by the meta-tedge-bin layer" % target)
     return tedgePkg
 
-# Automatically setup service system based on init manager
-def get_tedge_service(d):
-    initManager = d.getVar('INIT_MANAGER', True)
-    if "sysvinit" in initManager or "none" in initManager: 
-        tedgeService = "tedge-sysvinit"
-    elif "openrc" in initManager:
-        tedgeService = "tedge-openrc"
-    elif "systemd" in initManager:
-        tedgeService = "tedge-systemd"
-    else:
-        bb.warn("Init manager '%s' is not supported by the meta-tedge-bin layer" % initManager)
-        raise bb.parse.SkipPackage("Init manager '%s' is not supported by the meta-tedge-bin layer" % initManager)
-    return tedgeService
-
 TEDGE_PKG = "${@get_tedge_pkg(d)}"
-TEDGE_SERVICE = "${@get_tedge_service(d)}"
 
 FILES:${PN} += "\ 
     ${bindir}/* \ 
@@ -113,4 +98,3 @@ FILES:${PN} += "\
 "
 
 require architectures/${TEDGE_PKG}.inc
-require init-managers/${TEDGE_SERVICE}.inc

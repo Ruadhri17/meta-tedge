@@ -1,1 +1,0 @@
-SRC_URI += "https://dl.cloudsmith.io/public/thinedge/${INIT_REPO_CHANNEL}/raw/names/tedge-openrc/versions/${INIT_VERSION}/tedge-openrc.tar.gz;name=openrc;subdir=${BP}"

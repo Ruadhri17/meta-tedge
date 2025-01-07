@@ -1,4 +1,4 @@
-SRC_URI += "git://git@github.com/thin-edge/thin-edge.io.git;protocol=https;branch=main;name=tedge"
+SRC_URI += "git://git@github.com/thin-edge/thin-edge.io.git;protocol=https;branch=main"
 
 SRC_URI += " \
     file://operations/c8y/c8y_RemoteAccessConnect \ 
@@ -82,5 +82,3 @@ FILES:${PN} = "\
     ${TEDGE_CONFIG_DIR}/contrib/collectd \
     ${TEDGE_CONFIG_DIR}/sm-plugins/apt \
 "
-
-require tedge-services.inc
